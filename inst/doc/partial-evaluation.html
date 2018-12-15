@@ -12,14 +12,14 @@
 
 <meta name="author" content="Thomas Mailund" />
 
-<meta name="date" content="2018-04-26" />
+<meta name="date" content="2018-12-15" />
 
 <title>Partial evaluation with foolbox</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; position: absolute; }
@@ -83,7 +83,29 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -280,7 +302,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Partial evaluation with foolbox</h1>
 <h4 class="author"><em>Thomas Mailund</em></h4>
-<h4 class="date"><em>2018-04-26</em></h4>
+<h4 class="date"><em>2018-12-15</em></h4>
 
 
 
@@ -323,13 +345,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb4-19" data-line-number="19">)</a>
 <a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; Unit: milliseconds</span></a>
 <a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt;                          expr       min        lq      mean    median</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt;         time_uncurry(rescale) 22.193766 23.117494 25.194974 24.857187</span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt;     time_curry(rescale_curry) 22.258533 23.120718 25.628868 24.598172</span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt;  time_curry(rescale_curry_pe)  3.686013  3.958897  5.673716  4.365657</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt;         time_uncurry(rescale) 23.985258 25.192411 28.253877 27.955396</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt;     time_curry(rescale_curry) 23.904110 25.672767 28.912103 27.632925</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt;  time_curry(rescale_curry_pe)  3.594679  4.030582  6.582374  4.512094</span></a>
 <a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt;         uq      max neval</span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt;  26.060309 43.09655   100</span></a>
-<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt;  26.315421 54.47460   100</span></a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt;   6.318538 35.12429   100</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt;  29.175007 52.64393   100</span></a>
+<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt;  29.895446 63.98742   100</span></a>
+<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt;   7.444408 47.51016   100</span></a></code></pre></div>
 <p>The actual performance difference depends, of course, on how many times we call the partial-evaluated function and how complex it is.</p>
 </div>
 <div id="automatic-partial-evaluation" class="section level2">
@@ -372,12 +394,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb7-3" data-line-number="3">    <span class="kw">time_curry</span>(<span class="cf">function</span>(x) <span class="kw">pe</span>(rescale, x, x))</a>
 <a class="sourceLine" id="cb7-4" data-line-number="4">)</a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; Unit: milliseconds</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;                                       expr      min       lq     mean</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;                      time_uncurry(rescale) 22.44032 23.26399 25.01438</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  time_curry(function(x) pe(rescale, x, x)) 45.32826 46.20095 48.30860</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;                                       expr     min       lq     mean</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;                      time_uncurry(rescale) 24.0924 24.66969 28.31623</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  time_curry(function(x) pe(rescale, x, x)) 33.8725 35.51176 38.67932</span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;    median       uq      max neval</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  24.37594 25.12400 63.30896   100</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  46.85086 47.92804 82.75772   100</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  27.71651 28.69023 84.97467   100</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  37.71341 39.40081 85.86342   100</span></a></code></pre></div>
 <p>This is perhaps not so surprising considering that we do not actually <em>evaluate</em> the <code>mean(x)</code> and <code>sd(x)</code> expressions we wanted to evaluate.</p>
 <p>We can fix this by trying to evaluate all calls if all their arguments are evaluated, i.e. if all their arguments are atomic.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">eval_attempt &lt;-<span class="st"> </span><span class="cf">function</span>(expr, env) {</a>
@@ -418,12 +440,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb10-3" data-line-number="3">    <span class="kw">time_curry</span>(<span class="cf">function</span>(x) <span class="kw">pe</span>(rescale, x, x))</a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">)</a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; Unit: milliseconds</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;                                       expr       min       lq     mean</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;                      time_uncurry(rescale) 22.135470 22.73335 24.90991</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  time_curry(function(x) pe(rescale, x, x))  9.982515 10.47236 12.17176</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;                                       expr      min       lq     mean</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;                      time_uncurry(rescale) 23.81961 24.44317 27.36736</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  time_curry(function(x) pe(rescale, x, x)) 12.80204 13.37902 16.11078</span></a>
 <a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;    median       uq      max neval</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  23.93136 25.75657 55.57123   100</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  11.01616 12.96812 42.11383   100</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  26.57972 28.88052 67.02671   100</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  14.21857 17.32043 59.50037   100</span></a></code></pre></div>
 <p>Since we use <code>env</code> in the evaluation we also capture local variables where the function is defined:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">make_rescale &lt;-<span class="st"> </span><span class="cf">function</span>(m) {</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">    <span class="cf">function</span>(x, y) (y <span class="op">-</span><span class="st"> </span><span class="kw">m</span>(x))<span class="op">/</span><span class="kw">sd</span>(x)</a>
@@ -432,7 +454,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb11-5" data-line-number="5">closure_rescale <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pe</span>(x, test_x)</a>
 <a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; function (y) </span></a>
 <a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; (y - 0.46)/0.330605505096331</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; &lt;environment: 0x7fc2e7f508c8&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; &lt;environment: 0x7f824b4e9888&gt;</span></a></code></pre></div>
 </div>
 <div id="function-parameters-and-local-variables" class="section level2">
 <h2>Function parameters and local variables</h2>
